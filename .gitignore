@@ -34,6 +34,7 @@ venv/
 *.egg-info/
 
 # 数据与产物
+.probe/
 *.sqlite
 *.sqlite3
 *.db

@@ -27,6 +27,71 @@
 
 ---
 
+## 2026-08-09 · D003 · p01 目标定为 Welcome to the Jungle（欧洲职位），单价 $0.003/条
+
+**状态：** ACTIVE
+**与 D001/D002 的关系：** 补充，不推翻。两条都保持 ACTIVE。
+
+### 决定
+
+| 项 | 结果 |
+|---|---|
+| p01 目标 | Welcome to the Jungle（welcometothejungle.com）职位数据 |
+| 排除 | mobile.de、bizbuysell（实测 403 AkamaiGHost） |
+| 挂起 | handelsregister（本机网络取不到，非站点属性，见下） |
+| 单价 | **$0.003/条**（$3/1,000），对齐市场第一名，**不走 SPEC 原写的「区间上半段」** |
+| 抓取路径 | sitemap 枚举 + 详情页 JSON-LD，不用 Algolia |
+
+### 证据（实测，非估计）
+
+全部为登出、无代理、纯 HTTP：
+
+| 站点 | 结果 | 判定 |
+|---|---|---|
+| mobile.de | 403，Server: AkamaiGHost | 排除 |
+| bizbuysell | 403，Server: AkamaiGHost | 排除 |
+| handelsregister | 两次失败：超时 30s / curl exit=35（TLS） | 挂起 |
+| WTTJ | 200，详情页 209 KB | 保留 |
+
+WTTJ 语义锚点**两层都验通**：
+- 列表层：`sitemaps/index.xml.gz` → 12 张 job-listings 子图，抽样单图 10,000 条 URL 且 **10,000 条全部带 lastmod** → 全站约 **120,000 个职位 URL**，且 lastmod 可做增量。
+- 详情层：JSON-LD `@type=JobPosting`，字段 `title / datePosted / validThrough / employmentType / hiringOrganization / jobLocation / industry / qualifications` 全部实取到。
+
+两层都**不需要住宅代理、不需要无头浏览器、不需要 cookie**。这直接满足 SPEC 的排除规则和「绝不登录」红线。
+
+### 为什么不用 Algolia
+
+站点 `/api/env` 公开暴露 `PUBLIC_ALGOLIA_APPLICATION_ID` 与 client search key，但实测该 key
+`listIndexes` 与猜测的 index 名均返回 **403 "Index not allowed with this API key"**，jobs index 名未在 env 或 25 个 JS chunk 中出现。
+sitemap + JSON-LD 已经够用，且是官方公开面，比逆向前端接口稳。**不再花时间找 index 名。**
+
+### 单价为什么不听 SPEC 的「上半段」
+
+SPEC 原文要求单价落在 $1–10/1,000 的上半段。实测市场不在上半段：
+
+| 竞品 | 30 天用户 | 实际单价 |
+|---|---|---|
+| clearpath/welcome-to-the-jungle-jobs-api | 117 | $2.99/1,000 |
+| shahidirfan/Jungle-Job-Scraper | 37 | $0.99/1,000 |
+| logiover/welcome-to-the-jungle-jobs-scraper | 28 | 未设 result 价 |
+
+市场实际带宽是 **$1–3/1,000**，$5 以上没有活跃样本。作为零评价新号按 $5 定价，是同时输掉价格和信任。
+取 $3 与第一名同价。**这是明确偏离 SPEC 写死的规则，已在 SPEC 内标注冲突，不是默默改的。**
+
+因为 WTTJ 不需要住宅代理，边际成本约 $0.00001/条，比价格低两个数量级 —— 原先「$0.001/条必亏」的结论
+只在需要住宅代理时成立，**在这个目标上不成立**。价格带底部不再是亏损端。
+
+### 这个决定暴露的真实问题（不掩盖）
+
+按 $0.003/条、开发者分成 80%，**$500/月需要约 208,000 条/月**。
+市场第一名 30 天只有 117 个用户。也就是说：**单个 Actor 做到品类第一，量级上也到不了 $500/月。**
+
+这不推翻 p01，但把 D001 里那条待验证前提收窄成了一个更硬的问题：
+不是「平台会不会带来买家」，而是「单 Actor 的天花板是否本来就远低于目标」。
+G2 后 30 天的陌生人调用量会直接给出答案，**且不靠加 Actor 来救**（SPEC 已写死）。
+
+---
+
 ## 2026-08-09 · D002 · G4 措辞改准，G3/WIP 维持，监控层延后，p01 用 TS+Node
 
 **状态：** ACTIVE

@@ -21,3 +21,12 @@
 2026-08-09 | D002 已入档：G4 加「响应义务能在单次 15 分钟内履行」；G3 判定时点定为平台侧记录到收入，不等钱到账；WIP=2 维持第 2 格关闭；监控层/飞书层延后到 3 产品跨 2 平台。D001 保持 ACTIVE。
 2026-08-09 | 技术选型定：TS+Node（与规约一致，有官方 SDK）。省算力主因是「不开无头浏览器」而非换语言，这条采纳。Go 的代价（无官方 SDK、需自行处理 Actor 生命周期与数据集推送）未核实，暂不采用。
 2026-08-09 | 待办确认：Apify 原生失败通知需打开；KYC 现在就做，不等有收入（PayPal 提现门槛 $20，12 个月不达标作废）。
+- 2026-08-09 实测反爬（明文HTTP/登出/无代理）：mobile.de 403 AkamaiGHost；bizbuysell 403 AkamaiGHost；WTTJ 200；storeleads 200；handelsregister 两次失败（超时+curl 35 SSL），本网络不可达，属本地限制不算站点属性。
+- 2026-08-09 WTTJ 列表页是 Next.js App Router 客户端渲染，服务端无职位数据（124个script/0 ld+json/0 JobPosting）。
+- 2026-08-09 WTTJ 语义锚点已验证存在两处：详情页 ld+json 内 JobPosting（title/datePosted/validThrough/employmentType/hiringOrganization/jobLocation/industry 均在），以及 sitemap 全量枚举 12 张 job-listings 图 x 约1万条 ≈ 12万职位URL 且全部带 lastmod。
+- 2026-08-09 WTTJ /api/env 公开返回 Algolia appId CSEKHVMS53 与 public search key，但该 key 对 indexes 列举和已知 index 查询均 403，列表层不走 Algolia，改用 sitemap+lastmod 枚举。
+- 2026-08-09 WTTJ 竞品 PPE 实价：clearpath 每条 /usr/bin/bash.00299（u30d=117，含 Job 事件）；shahidirfan 每条 /usr/bin/bash.00099（u30d=37）；logiover 未设 result 价（u30d=28）。四家 30 天用户合计约 182。
+- 2026-08-09 p01 目标定 WTTJ，单价 /usr/bin/bash.003/条，边际成本约 /usr/bin/bash.00001/条（数据中心代理+无浏览器），毛利率约 99%。
+- 2026-08-09 到 500 美元/月需约 20.8 万条/月，等于要做到该垂类第一（现第一名 30 天用户 117）。
+- 2026-08-09 Apify 账号为 FREE：月上限 、625 CU、RESIDENTIAL availableCount=0（仅 BUYPROXIES94952 数据中心 5 个）。WTTJ 不需住宅代理，该限制对本目标不成立；48 小时 soak 用 256MB 约 .40， 内可行。
+- 2026-08-09 坑：Windows Python 读写文件与 print 非 ASCII 默认 GBK，必须 encoding=utf-8 且设 PYTHONIOENCODING=utf-8。minified 单行 HTML 用 grep -c 恒为 0/1，计数要用 Python。
