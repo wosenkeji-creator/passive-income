@@ -1,0 +1,50 @@
+# 密钥 —— 优先级最高
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials*
+*密钥*
+*秘钥*
+apify_storage/
+storage/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# 数据与产物
+*.sqlite
+*.sqlite3
+*.db
+data/raw/
+tmp/
+*.log
+
+# OS / 编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/settings.json
