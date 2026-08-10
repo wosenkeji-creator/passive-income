@@ -21,3 +21,12 @@ docker run --rm -v "${PWD}/examples:/app/examples:ro" -v "${PWD}/output:/app/out
 ```
 
 当前限制：Make 的路由通过 `routes` 嵌套结构生成依赖；平台导出结构变更需要新增适配测试。SOP 是基于节点类型和参数摘要的草稿，不能替代人工安全审阅。
+
+Gumroad 下载包的使用许可见 `CUSTOMER_LICENSE.md`。
+
+购买包还包括：
+
+- `SETUP_GUIDE.md`：Node.js 与 Docker 安装、运行和故障排查。
+- `QA_CHECKLIST.md`：生成文档后的人工验收清单。
+- `REVIEW_PROMPTS.md`：将生成结果交给 AI 审阅时可复用的提示词。
+- `LICENSE_ATTRIBUTION.md`：代码、示例和第三方依赖的许可说明。
