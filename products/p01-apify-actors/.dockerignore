@@ -1,0 +1,11 @@
+node_modules
+dist
+storage
+.git
+.gitignore
+*.log
+*.tgz
+scripts
+src/**/*.test.ts
+TEST_REPORT.md
+STORE_LISTING.md

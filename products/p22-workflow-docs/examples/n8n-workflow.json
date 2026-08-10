@@ -1,0 +1,12 @@
+{
+  "name": "Lead intake",
+  "nodes": [
+    { "id": "1", "name": "Webhook", "type": "n8n-nodes-base.webhook", "parameters": { "path": "lead" } },
+    { "id": "2", "name": "Enrich", "type": "n8n-nodes-base.httpRequest", "parameters": { "url": "https://example.test/enrich" } },
+    { "id": "3", "name": "Notify", "type": "n8n-nodes-base.emailSend", "parameters": { "to": "owner@example.test" } }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Enrich", "type": "main", "index": 0 }]] },
+    "Enrich": { "main": [[{ "node": "Notify", "type": "main", "index": 0 }]] }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Lead intake",
+  "flow": [
+    { "id": 10, "module": "webhooks:CustomWebhook", "mapper": {}, "metadata": { "designer": { "x": 0, "y": 0 } } },
+    { "id": 20, "module": "http:ActionSendData", "mapper": { "url": "https://example.test" }, "metadata": { "designer": { "x": 240, "y": 0 } } }
+  ]
+}

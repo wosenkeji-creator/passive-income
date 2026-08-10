@@ -1,0 +1,14 @@
+{
+  "url": "https://www.welcometothejungle.com/en/companies/example/jobs/data-engineer_paris",
+  "title": "Data Engineer",
+  "company": "Example Co",
+  "employmentType": ["FULL_TIME"],
+  "datePosted": "2026-08-09",
+  "jobLocation": [
+    {
+      "addressLocality": "Paris",
+      "addressCountry": "FR"
+    }
+  ],
+  "sourceLastModified": "2026-08-09"
+}

@@ -1,0 +1,13 @@
+{
+  "actorSpecification": 1,
+  "name": "wttj-job-scraper",
+  "title": "Welcome to the Jungle Job Scraper",
+  "version": "1.0",
+  "build": {
+    "dockerfile": "../Dockerfile"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  }
+}

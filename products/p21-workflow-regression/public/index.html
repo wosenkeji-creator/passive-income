@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workflow Cost Bench</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="kicker">p21 / local utility</p>
+      <h1>Workflow Cost Bench</h1>
+    </div>
+    <div class="status"><span></span> Calculator ready</div>
+  </header>
+  <main>
+    <form id="calculator">
+      <section>
+        <h2>Run volume</h2>
+        <label>Executions / month<input name="executionsPerMonth" type="number" min="0" step="1" value="10000"></label>
+        <label>Model nodes / execution<input name="nodeInvocationsPerExecution" type="number" min="0" step="1" value="2"></label>
+        <label>Platform cost / execution (USD)<input name="platformCostPerExecution" type="number" min="0" step="0.0001" value="0.001"></label>
+      </section>
+      <section>
+        <h2>Token load</h2>
+        <label>Input tokens / model node<input name="inputTokensPerInvocation" type="number" min="0" step="1" value="1500"></label>
+        <label>Output tokens / model node<input name="outputTokensPerInvocation" type="number" min="0" step="1" value="500"></label>
+        <label>USD to CNY<input name="usdToCny" type="number" min="0" step="0.01" value="7.20"></label>
+      </section>
+      <section>
+        <h2>Model price</h2>
+        <label>Input / 1M tokens (USD)<input name="inputPricePerMillion" type="number" min="0" step="0.01" value="2"></label>
+        <label>Output / 1M tokens (USD)<input name="outputPricePerMillion" type="number" min="0" step="0.01" value="8"></label>
+        <button type="submit">Recalculate</button>
+      </section>
+    </form>
+    <section class="readout" aria-live="polite">
+      <div><span>Total / month</span><strong id="total-usd">$0.00</strong><small id="total-cny">CNY 0.00</small></div>
+      <div><span>Model</span><strong id="model-cost">$0.00</strong><small id="tokens">0 tokens</small></div>
+      <div><span>Platform</span><strong id="platform-cost">$0.00</strong><small id="runs">0 executions</small></div>
+      <div><span>Per execution</span><strong id="per-run">$0.0000</strong><small id="nodes">0 node calls</small></div>
+    </section>
+    <p id="error" role="alert"></p>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

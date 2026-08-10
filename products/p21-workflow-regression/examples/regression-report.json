@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-10T00:00:00.000Z",
+  "passed": false,
+  "baselineWorkflowHash": "example-baseline-hash",
+  "currentWorkflowHash": "example-current-hash",
+  "workflow": {
+    "addedNodes": [],
+    "removedNodes": [],
+    "changedNodes": [],
+    "addedEdges": [],
+    "removedEdges": []
+  },
+  "cases": [
+    { "name": "lead intake", "status": "changed", "expectedStatus": 200, "actualStatus": 200, "expectedBodyHash": "revision-1-hash", "actualBodyHash": "revision-2-hash" }
+  ],
+  "summary": { "totalCases": 1, "passedCases": 0, "changedCases": 1, "workflowChanged": false }
+}

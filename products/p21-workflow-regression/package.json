@@ -1,0 +1,23 @@
+{
+  "name": "workflow-regression-local",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc",
+    "start": "node dist/server.js",
+    "cli": "node dist/cli.js",
+    "test": "tsx --test --test-concurrency=1 \"src/**/*.test.ts\"",
+    "test:e2e": "npm run build && node scripts/local-e2e.mjs",
+    "verify": "npm test && npm run test:e2e"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

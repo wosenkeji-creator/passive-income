@@ -1,0 +1,7 @@
+[
+  {
+    "name": "valid lead",
+    "input": { "name": "Ada", "email": "ada@example.test" },
+    "expectedStatus": 200
+  }
+]

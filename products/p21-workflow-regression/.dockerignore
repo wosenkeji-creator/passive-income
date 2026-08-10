@@ -1,0 +1,7 @@
+node_modules
+dist
+.git
+*.log
+reports
+src/**/*.test.ts
+TEST_REPORT.md

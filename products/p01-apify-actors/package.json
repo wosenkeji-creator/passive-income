@@ -1,0 +1,29 @@
+{
+  "name": "wttj-job-scraper",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Apify Actor for scraping Welcome to the Jungle job listings",
+  "main": "dist/main.js",
+  "files": ["dist", ".actor", "examples", "README.md", "STORE_LISTING.md"],
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc",
+    "start": "node dist/main.js",
+    "start:local": "npm run build && node dist/main.js",
+    "dev": "tsx watch src/main.ts",
+    "test": "tsx --test \"src/**/*.test.ts\"",
+    "test:e2e": "npm run build && node scripts/local-e2e.mjs",
+    "verify": "npm test && npm run test:e2e && npm pack --dry-run"
+  },
+  "dependencies": {
+    "apify": "^3.7.2",
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

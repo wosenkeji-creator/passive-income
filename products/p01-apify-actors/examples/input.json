@@ -1,0 +1,9 @@
+{
+  "maxResults": 25,
+  "maxPages": 100,
+  "concurrency": 3,
+  "country": "FR",
+  "city": "Paris",
+  "contractType": "FULL_TIME",
+  "includeDescription": true
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Lead intake",
+  "nodes": [
+    { "id": "1", "name": "Webhook", "type": "n8n-nodes-base.webhook", "position": [0, 0], "parameters": { "path": "lead" } },
+    { "id": "2", "name": "Respond", "type": "n8n-nodes-base.respondToWebhook", "position": [240, 0], "parameters": { "respondWith": "json" } }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Respond", "type": "main", "index": 0 }]] }
+  },
+  "settings": {}
+}
