@@ -1,4 +1,5 @@
 import { Actor, log } from 'apify';
+import { deliverAndCharge } from './billing.js';
 import { normalizeInput } from './input.js';
 import { scrape } from './scraper.js';
 import { BrowserWafTokenSource } from './waf-browser.js';
@@ -21,9 +22,20 @@ await Actor.main(async () => {
         );
       },
     });
-    for (const result of results) await Actor.pushData(result);
+    const billing = await deliverAndCharge(
+      results,
+      { charge: (options) => Actor.charge(options) },
+      { push: (record) => Actor.pushData(record) },
+      (delivered, withheld) => {
+        log.warning(
+          `Charge limit reached after ${delivered} results; ${withheld} matching ` +
+            'postings were not delivered. Raise the run budget to receive them.',
+        );
+      },
+    );
     await Actor.setValue('run-summary', {
       ...summary,
+      billing,
       filters: {
         country: input.country,
         city: input.city,
@@ -35,8 +47,9 @@ await Actor.main(async () => {
     // Browser launches are the cost driver of this Actor, so they are reported
     // next to the result count rather than buried in the key-value store.
     log.info(
-      `Completed: ${results.length} matching job postings ` +
-        `(wafChallenges=${summary.wafChallenges}, wafTokenMints=${summary.wafTokenMints})`,
+      `Completed: ${billing.deliveredResults} matching job postings delivered ` +
+        `(charged=${billing.chargedEvents}, withheld=${billing.withheldForBudget}, ` +
+        `wafChallenges=${summary.wafChallenges}, wafTokenMints=${summary.wafTokenMints})`,
     );
   } finally {
     await tokenSource.close();

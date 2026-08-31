@@ -1,0 +1,7 @@
+{
+  "job-result": {
+    "eventTitle": "Job posting delivered",
+    "eventDescription": "One job posting that matched the requested filters and was written to the dataset. Pages fetched but filtered out, and pages that failed to parse, are not charged.",
+    "eventPriceUsd": 0.003
+  }
+}
