@@ -1,0 +1,18 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "url": { "type": "string", "description": "Public WTTJ job URL" },
+    "title": { "type": "string" },
+    "company": { "type": "string" },
+    "companyUrl": { "type": "string" },
+    "employmentType": { "type": "array", "items": { "type": "string" } },
+    "datePosted": { "type": "string" },
+    "validThrough": { "type": "string" },
+    "industry": { "type": "string" },
+    "experienceRequirements": { "type": "object" },
+    "qualifications": { "type": "string" },
+    "description": { "type": "string" },
+    "jobLocation": { "type": "array", "items": { "type": "object" } },
+    "sourceLastModified": { "type": "string" }
+  }
+}
