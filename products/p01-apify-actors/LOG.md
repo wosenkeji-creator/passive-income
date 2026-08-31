@@ -25,8 +25,8 @@
 - 2026-08-09 WTTJ 列表页是 Next.js App Router 客户端渲染，服务端无职位数据（124个script/0 ld+json/0 JobPosting）。
 - 2026-08-09 WTTJ 语义锚点已验证存在两处：详情页 ld+json 内 JobPosting（title/datePosted/validThrough/employmentType/hiringOrganization/jobLocation/industry 均在），以及 sitemap 全量枚举 12 张 job-listings 图 x 约1万条 ≈ 12万职位URL 且全部带 lastmod。
 - 2026-08-09 WTTJ /api/env 公开返回 Algolia appId CSEKHVMS53 与 public search key，但该 key 对 indexes 列举和已知 index 查询均 403，列表层不走 Algolia，改用 sitemap+lastmod 枚举。
-- 2026-08-09 WTTJ 竞品 PPE 实价：clearpath 每条 /usr/bin/bash.00299（u30d=117，含 Job 事件）；shahidirfan 每条 /usr/bin/bash.00099（u30d=37）；logiover 未设 result 价（u30d=28）。四家 30 天用户合计约 182。
-- 2026-08-09 p01 目标定 WTTJ，单价 /usr/bin/bash.003/条，边际成本约 /usr/bin/bash.00001/条（数据中心代理+无浏览器），毛利率约 99%。
+- 2026-08-09 WTTJ 竞品 PPE 实价：clearpath 每条 $0.00299（u30d=117，含 Job 事件）；shahidirfan 每条 $0.00099（u30d=37）；logiover 未设 result 价（u30d=28）。四家 30 天用户合计约 182。
+- 2026-08-09 p01 目标定 WTTJ，单价 $0.003/条，边际成本约 $0.00001/条（数据中心代理+无浏览器），毛利率约 99%。
 - 2026-08-09 到 500 美元/月需约 20.8 万条/月，等于要做到该垂类第一（现第一名 30 天用户 117）。
 - 2026-08-09 Apify 账号为 FREE：月上限 、625 CU、RESIDENTIAL availableCount=0（仅 BUYPROXIES94952 数据中心 5 个）。WTTJ 不需住宅代理，该限制对本目标不成立；48 小时 soak 用 256MB 约 .40， 内可行。
 - 2026-08-09 坑：Windows Python 读写文件与 print 非 ASCII 默认 GBK，必须 encoding=utf-8 且设 PYTHONIOENCODING=utf-8。minified 单行 HTML 用 grep -c 恒为 0/1，计数要用 Python。
