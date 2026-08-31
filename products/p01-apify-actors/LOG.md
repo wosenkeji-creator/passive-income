@@ -47,3 +47,10 @@
 - 2026-09-01 | 关键发现：挑战通过后浏览器拿到 `aws-waf-token`（370 字节，`.www.welcometothejungle.com`，有效期 96 小时）。把该 cookie 加上同一 UA 喂给明文 HTTP：串行 15/15 全部 200 且带 JobPosting；并发 5 时 40 页 9.3 秒（4.28 页/秒）40/40 全通过。
 - 2026-09-01 | 由此确定 G1 的技术形状：浏览器只用来取一次 token（每 96 小时一次），抓取主体仍是无浏览器明文 HTTP。边际成本模型（$0.00001/条、无住宅代理）不受影响。
 - 2026-09-01 | robots.txt 复核（带 token 取到）：disallow 仅 `/me/* /settings/* /users/* */jobs?query=* /*?`；职位详情页路径与 sitemap 均未被 disallow，sitemap 由 robots 主动公布。
+- 2026-09-01 | 「token 有效期 96 小时」是被 cookie 自报的过期时间骗了。稳定流量下实测 `FIRST_SUSTAINED_BLOCK_AT_MIN=5.77`，可用窗口约 5 分钟，因此代码里的主动重铸 TTL 定 240 秒，而不是按 96 小时缓存。
+- 2026-09-01 | token 只在「被挑战的那一页」发得出来：`/en` 首页轮询 12 秒拿到 11 个 cookie 但没有 `aws-waf-token`，职位详情页约 1 秒就发。所以 mint 必须带 hintUrl 指向受保护路径，拿站点根做 warmup 永远拿不到 token。
+- 2026-09-01 | 发放是「按 context 且间歇」的：同一段 warmup 逻辑，有的新 context 0.8–1.0 秒拿到 token，有的 15 秒一个都不发 —— 因为只有 WAF 真的挑战了这个 context 才会下发。原实现在单个 context 上等 45 秒，导致一次真实运行 14 次挑战 0 次 mint。改成短超时（8 秒）+ 换新 context 重试（最多 6 次），同一批 URL 立刻变成 1 次 mint 全部通过。
+- 2026-09-01 | 一个差点改错架构的错误测量：把浏览器 cookie jar 原样喂给明文 HTTP 仍然 202，看起来像「封锁按指纹而非按 cookie」，那会让 HTTP 通路直接作废。实际是那个 context 里根本没有 `aws-waf-token`，复制的是缺了关键 cookie 的 jar。用真实 token 复测：串行 8/8、并发 5 时 40/40 零挑战，且「只带 token」与「带整个 jar」表现完全一致 —— 只有 WAF 这一个 cookie 起作用。
+- 2026-09-01 | 端到端实测（浏览器只 mint 一次 + 明文 HTTP 抓取）：25 页 16.6 秒全解析；220 个候选取到 204/204，61.6 秒，3.31 页/秒，1 次 mint、5 次挑战、0 失败。$0.00001/条 的边际成本模型成立。
+- 2026-09-01 | 抓取主体按「懒 mint」实现：先不带 token 发请求，只有真的收到挑战才铸；因为 sitemap 端点本身 200 且不发 token，预先铸币等于为不需要的请求白开一次浏览器。
+- 2026-09-01 | Dockerfile 换 `apify/actor-node-playwright-chrome:22-1.62.1`。tag 必须钉住 playwright 版本：镜像只预装一个 Chromium revision，npm 包拒绝启动它没编译过的 revision；`:20` 最后构建于 2026-05 且不存在 1.62.1 变体，会在启动而不是安装时失败。

@@ -4,7 +4,11 @@
   "type": "module",
   "description": "Apify Actor for scraping Welcome to the Jungle job listings",
   "main": "dist/main.js",
-  "files": ["dist", ".actor", "README.md"],
+  "files": [
+    "dist",
+    ".actor",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",
@@ -14,7 +18,8 @@
   },
   "dependencies": {
     "apify": "^3.7.2",
-    "cheerio": "^1.0.0"
+    "cheerio": "^1.0.0",
+    "playwright": "^1.62.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
