@@ -66,10 +66,14 @@ test('scrapes a sitemap index and detail pages end to end', async () => {
  * token — the session-scoped behaviour measured on WTTJ, where slowing down does
  * not help and only a freshly minted token does.
  */
-function challengingServer(validToken: () => string): {
+function challengingServer(
+  validToken: () => string,
+  options: { sendActionHeader?: boolean } = {},
+): {
   server: Server;
   challenged: () => number;
 } {
+  const sendActionHeader = options.sendActionHeader ?? true;
   let challenged = 0;
   const server = createServer((request, response) => {
     const port = (server.address() as { port: number }).port;
@@ -79,7 +83,10 @@ function challengingServer(validToken: () => string): {
       challenged += 1;
       response.statusCode = 202;
       response.setHeader('content-type', 'text/html');
-      response.setHeader('x-amzn-waf-action', 'challenge');
+      // Optional on purpose: WTTJ was measured sending this header, but detection
+      // must not depend on it — the status-plus-body path is the fallback and needs
+      // its own end-to-end coverage.
+      if (sendActionHeader) response.setHeader('x-amzn-waf-action', 'challenge');
       response.end(CHALLENGE_BODY);
       return;
     }
@@ -173,6 +180,43 @@ test('a token invalidated mid-run is re-minted once and the page still lands', a
     assert.equal(summary.invalidPages, 0);
     assert.equal(summary.requestFailures, 0);
     assert.equal(challenged(), 2);
+  } finally {
+    server.close();
+  }
+});
+
+test('a challenge with no x-amzn-waf-action header is still recovered', async () => {
+  // The three tests above all let the mock send `x-amzn-waf-action`, which means
+  // they pass even if the status-plus-body branch of `isWafChallenge` is broken.
+  // A CloudFront edge is not contractually obliged to attach that header, so the
+  // fallback path gets its own end-to-end run.
+  let issued = 0;
+  const state = { token: 'aws-waf-token=not-yet-minted' };
+  const source: WafTokenSource = {
+    async mint(): Promise<WafToken> {
+      issued += 1;
+      state.token = `aws-waf-token=mint${issued}`;
+      return { cookie: state.token, userAgent: 'Mozilla/5.0 (minted)' };
+    },
+  };
+  const { server, challenged } = challengingServer(() => state.token, {
+    sendActionHeader: false,
+  });
+  const port = await listen(server);
+  const input = normalizeInput({
+    sitemapUrl: `http://127.0.0.1:${port}/index.xml`,
+    maxResults: 2,
+    concurrency: 1,
+  });
+  try {
+    const { results, summary } = await scrape(input, { tokenSource: source });
+    assert.equal(results.length, 2);
+    assert.equal(summary.parsedPostings, 2);
+    assert.equal(summary.invalidPages, 0, 'the 202 body must not reach the JSON-LD parser');
+    assert.equal(summary.requestFailures, 0);
+    assert.equal(challenged(), 1);
+    assert.equal(summary.wafChallenges, 1);
+    assert.equal(summary.wafTokenMints, 1);
   } finally {
     server.close();
   }
