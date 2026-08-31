@@ -40,3 +40,10 @@
 - 2026-08-10 | 本地构建通过，7 个测试通过；测试覆盖 sitemap 解压/解析、JobPosting JSON-LD、筛选器和本地 HTTP 端到端链路。
 - 2026-08-10 | WTTJ 总索引复测返回 9 张 `job-listings.*.xml.gz` 子图；与 2026-08-09 记录的 12 张快照不同。
 - 2026-08-10 | WTTJ 详情页复测：浏览器兼容 User-Agent 可下载约 209 KB 页面，但本轮 3 个页面未解析出 JobPosting；随后请求进入 HTTP 202/0 字节状态，G1 未通过，需重新核实详情页结构与限流行为。
+- 2026-09-01 | 2026-08-10 的「详情页解析失败」定性错了：不是 WTTJ 改版，是 AWS WAF。实测明文 HTTP 首几个请求 200 且 JSON-LD 里 `JobPosting` 完整，之后全站转 `HTTP 202 / 2452 字节 / Server: CloudFront / window.awsWafCookie` 的挑战页；`parseJobPostingHtml` 在挑战页上找不到 JSON-LD，于是被记成 invalidPages。
+- 2026-09-01 | 实测反证「降速可绕」：冷却 75 秒后 8 秒间隔串行 20 次，20/20 全部拿到挑战页；4 秒间隔 18 次同样 18/18。封锁按会话而非按速率，降速无效。
+- 2026-09-01 | 实测 `got-scraping`（TLS/header 指纹伪装）6 次里只有第 1 次 200，其余 5 次挑战页 —— 指纹层不是判据。
+- 2026-09-01 | 实测无头 Chromium（playwright 1234 版本 chrome-win64）能通过：挑战页自己跑 JS 后重载出真实文档，6 页 5 通过 1 次导航竞态，单页 2.0–4.1 秒。
+- 2026-09-01 | 关键发现：挑战通过后浏览器拿到 `aws-waf-token`（370 字节，`.www.welcometothejungle.com`，有效期 96 小时）。把该 cookie 加上同一 UA 喂给明文 HTTP：串行 15/15 全部 200 且带 JobPosting；并发 5 时 40 页 9.3 秒（4.28 页/秒）40/40 全通过。
+- 2026-09-01 | 由此确定 G1 的技术形状：浏览器只用来取一次 token（每 96 小时一次），抓取主体仍是无浏览器明文 HTTP。边际成本模型（$0.00001/条、无住宅代理）不受影响。
+- 2026-09-01 | robots.txt 复核（带 token 取到）：disallow 仅 `/me/* /settings/* /users/* */jobs?query=* /*?`；职位详情页路径与 sitemap 均未被 disallow，sitemap 由 robots 主动公布。
