@@ -18,7 +18,7 @@ G0–G3 名额：**1 / 2**
 
 | ID | 产品 | 渠道 | 阶段 | 上架日 | 累计收入 | 上次维护 |
 |---|---|---|---|---|---|---|
-| p01 | Apify Actors（WTTJ 职位） | Apify Store | G1 已过，代码完成，待 Console 定价+上架 | — | $0 | 2026-09-01 |
+| p01 | Apify Actors（WTTJ 职位） | Apify Store | G1 已过，G2 进行中（KYC 审核中，预计 2026-09-03 完成） | — | $0 | 2026-09-01 |
 
 ## 未立项的候选（来自 Top20，不占 WIP）
 
@@ -44,3 +44,6 @@ p19（AI 内容矩阵）、p20（餐饮建站）已在调研中否掉，编号�
 - 2026-09-01 p01 代码全部完成并部署到 Apify 平台（`8a9654e`）：input/dataset schema 补全
   editor 与 description 字段，Actor 构建成功（rg7Qez15cuAtZdZ2b / build 1.0.5）。
   剩余两步：Console 应用 $0.003 定价 + Store 发布，之后平台自动结算。详见 CONSOLE_SETUP.md。
+- 2026-09-01 p01 提交 KYC 文件：Billing details（彭阿特、万安街道、泉州市）与 PayPal 收款方式
+  （985064198@qq.com）已完成；身份验证审核中（Identity verification pending），预计 1-2 个工作日
+  通过后可设置 Monetization 定价。定价已确定：$0.003/result，匹配市场领先者，靠功能区分而非低价竞争。
