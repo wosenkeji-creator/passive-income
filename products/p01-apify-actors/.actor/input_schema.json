@@ -7,49 +7,61 @@
       "title": "Sitemap URL",
       "type": "string",
       "description": "Public WTTJ sitemap index. Override only for a compatible test fixture.",
-      "default": "https://www.welcometothejungle.com/sitemaps/index.xml.gz"
+      "default": "https://www.welcometothejungle.com/sitemaps/index.xml.gz",
+      "editor": "textfield"
     },
     "maxResults": {
       "title": "Maximum results",
       "type": "integer",
+      "description": "Stop after this many matching results are delivered to the dataset.",
       "minimum": 1,
       "maximum": 1000,
-      "default": 100
+      "default": 100,
+      "editor": "number"
     },
     "maxPages": {
       "title": "Maximum detail pages",
       "type": "integer",
+      "description": "Stop fetching detail pages after this limit, even if more sitemap entries remain.",
       "minimum": 1,
       "maximum": 10000,
-      "default": 500
+      "default": 500,
+      "editor": "number"
     },
     "concurrency": {
       "title": "Concurrency",
       "type": "integer",
+      "description": "Maximum number of detail pages fetched in parallel.",
       "minimum": 1,
       "maximum": 20,
-      "default": 5
+      "default": 5,
+      "editor": "number"
     },
     "requestTimeoutMs": {
       "title": "Request timeout (ms)",
       "type": "integer",
+      "description": "Timeout for each HTTP request.",
       "minimum": 1000,
       "maximum": 120000,
-      "default": 30000
+      "default": 30000,
+      "editor": "number"
     },
-    "country": { "title": "Country", "type": "string" },
-    "city": { "title": "City", "type": "string" },
-    "contractType": { "title": "Contract type", "type": "string" },
-    "company": { "title": "Company", "type": "string" },
+    "country": { "title": "Country", "type": "string", "description": "Filter by country (e.g. 'France').", "editor": "textfield" },
+    "city": { "title": "City", "type": "string", "description": "Filter by city (e.g. 'Paris').", "editor": "textfield" },
+    "contractType": { "title": "Contract type", "type": "string", "description": "Filter by contract type (e.g. 'FULL_TIME').", "editor": "textfield" },
+    "company": { "title": "Company", "type": "string", "description": "Filter by company name.", "editor": "textfield" },
     "updatedSince": {
       "title": "Updated since",
       "type": "string",
-      "description": "ISO-8601 date; sitemap entries without lastmod are retained."
+      "description": "ISO-8601 date; sitemap entries without lastmod are retained.",
+      "editor": "textfield"
     },
     "includeDescription": {
       "title": "Include description",
       "type": "boolean",
-      "default": true
+      "description": "Whether to include the full job description in results.",
+      "default": true,
+      "editor": "checkbox"
     }
   }
 }
