@@ -18,7 +18,7 @@ G0–G3 名额：**1 / 2**
 
 | ID | 产品 | 渠道 | 阶段 | 上架日 | 累计收入 | 上次维护 |
 |---|---|---|---|---|---|---|
-| p01 | Apify Actors（WTTJ 职位） | Apify Store | G1 已过，G2 待人工上架 | — | $0 | 2026-09-01 |
+| p01 | Apify Actors（WTTJ 职位） | Apify Store | G1 已过，代码完成，待 Console 定价+上架 | — | $0 | 2026-09-01 |
 
 ## 未立项的候选（来自 Top20，不占 WIP）
 
@@ -41,3 +41,6 @@ p19（AI 内容矩阵）、p20（餐饮建站）已在调研中否掉，编号�
 - 2026-09-01 p01 接上按次计费（`85c9503`）：一条结果一个 `job-result` 事件、先扣费再交付，
   `.actor/pricing.json` 声明 $0.003 单价，35 个测试通过，`npm run check:ppe` 走真实
   `Actor.charge` 双 mode 通过。**Console 定价与 Store 上架属人工确认，未代做，故 G2 未过。**
+- 2026-09-01 p01 代码全部完成并部署到 Apify 平台（`8a9654e`）：input/dataset schema 补全
+  editor 与 description 字段，Actor 构建成功（rg7Qez15cuAtZdZ2b / build 1.0.5）。
+  剩余两步：Console 应用 $0.003 定价 + Store 发布，之后平台自动结算。详见 CONSOLE_SETUP.md。
